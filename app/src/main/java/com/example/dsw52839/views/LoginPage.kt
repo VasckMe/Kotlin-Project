@@ -32,12 +32,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.example.dsw52839.ui.theme.PurpleBorder
+import com.example.dsw52839.ui.theme.PurpleTextAndIcon
 import com.example.dsw52839.utils.Routes
 
 @Composable
@@ -47,7 +50,7 @@ fun LoginPage(navController: NavController) {
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
     ) {
-        Text(text = "Sign In")
+        Text(text = "Sign In", color = PurpleTextAndIcon)
 
         Spacer(modifier = Modifier.height(40.dp))
 
@@ -76,9 +79,8 @@ fun SimpleTextField(placeholder: String, leadingIcon: ImageVector, showTrailingI
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
         onValueChange = { text.value = it },
         placeholder = { Text(placeholder) },
-//        background: rgba(71, 26, 160, 1);
 
-    leadingIcon = { Icon(leadingIcon, contentDescription = "Person Icon", tint = Color(red = 71, green = 26, blue = 160, alpha = 255))},
+    leadingIcon = { Icon(leadingIcon, contentDescription = "Person Icon", tint = PurpleTextAndIcon)},
         trailingIcon = {
             if (showTrailingIcon)
                 IconButton(onClick = { passwordIsHidden.value = !passwordIsHidden.value }) {
@@ -91,6 +93,6 @@ fun SimpleTextField(placeholder: String, leadingIcon: ImageVector, showTrailingI
             .padding(horizontal = 20.dp)
             .fillMaxWidth()
             .clip(RoundedCornerShape(15.dp))
-            .border(2.dp, MaterialTheme.colorScheme.primary, RoundedCornerShape(15.dp))
+            .border(2.dp, PurpleBorder, RoundedCornerShape(15.dp))
         )
 }
