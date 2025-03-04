@@ -98,37 +98,3 @@ fun LoginPage(navController: NavController, viewModel: LoginViewModel = viewMode
         }
     }
 }
-
-@Composable
-fun SimpleTextField(
-    placeholder: String,
-    leadingIcon: ImageVector,
-    showTrailingIcon: Boolean = false,
-    value: String,
-    onValueChange: (String) -> Unit,
-    isValid: Boolean
-) {
-    val passwordIsHidden = remember { mutableStateOf(showTrailingIcon) }
-
-    TextField(
-        value = value,
-        visualTransformation = if (passwordIsHidden.value) PasswordVisualTransformation() else VisualTransformation.None,
-        keyboardOptions = KeyboardOptions(keyboardType = if (showTrailingIcon) KeyboardType.Password else KeyboardType.Text),
-        onValueChange = onValueChange,
-        label = { Text(placeholder) },
-        leadingIcon = { Icon(leadingIcon, contentDescription = null, tint = PurpleTextAndIcon) },
-        trailingIcon = {
-            if (showTrailingIcon) {
-                IconButton(onClick = { passwordIsHidden.value = !passwordIsHidden.value }) {
-                    Icon(Icons.Default.Close, contentDescription = null)
-                }
-            }
-        },
-        singleLine = true,
-        isError = !isValid,
-        modifier = Modifier
-            .fillMaxWidth()
-            .clip(RoundedCornerShape(15.dp))
-            .border(2.dp, PurpleBorder, RoundedCornerShape(15.dp))
-    )
-}
