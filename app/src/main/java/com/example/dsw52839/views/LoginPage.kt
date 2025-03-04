@@ -92,7 +92,7 @@ fun LoginPage(navController: NavController, viewModel: LoginViewModel = viewMode
         Button(
             colors = ButtonDefaults.buttonColors(containerColor = PurpleButton),
             modifier = Modifier.fillMaxWidth(),
-            onClick = { navController.navigate(route = Routes.registerPage) }
+            onClick = { navController.navigate(route = Routes.homePage) }
         ) {
             Text(text = "Sign In")
         }
