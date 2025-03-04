@@ -133,15 +133,15 @@ fun LoginPage(navController: NavController, viewModel: LoginViewModel = LoginVie
 fun SimpleTextField(placeholder: String, leadingIcon: ImageVector, showTrailingIcon: Boolean = false) {
     val text = remember { mutableStateOf("") }
     val passwordIsHidden = remember { mutableStateOf(showTrailingIcon) }
+    val isValid = text.value.length >= 3
 
     TextField(
         value = text.value,
         visualTransformation = if (passwordIsHidden.value) PasswordVisualTransformation() else VisualTransformation.None,
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
         onValueChange = { text.value = it },
-        placeholder = { Text(placeholder) },
-
-    leadingIcon = { Icon(leadingIcon, contentDescription = "Person Icon", tint = PurpleTextAndIcon)},
+        label = { Text(placeholder) },
+        leadingIcon = { Icon(leadingIcon, contentDescription = "Person Icon", tint = PurpleTextAndIcon)},
         trailingIcon = {
             if (showTrailingIcon)
                 IconButton(onClick = { passwordIsHidden.value = !passwordIsHidden.value }) {
@@ -149,10 +149,10 @@ fun SimpleTextField(placeholder: String, leadingIcon: ImageVector, showTrailingI
                 }
         },
         singleLine = true,
-        isError = text.value.isNotEmpty() && text.value.length < 8,
+        isError = !isValid,
         modifier = Modifier
             .fillMaxWidth()
             .clip(RoundedCornerShape(15.dp))
             .border(2.dp, PurpleBorder, RoundedCornerShape(15.dp))
-        )
+    )
 }
