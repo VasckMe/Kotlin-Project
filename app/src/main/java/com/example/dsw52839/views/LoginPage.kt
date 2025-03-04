@@ -57,7 +57,7 @@ fun LoginPage(navController: NavController, viewModel: LoginViewModel = viewMode
             fontWeight = FontWeight.W700,
         )
 
-        Spacer(modifier = Modifier.height(40.dp))
+        Spacer(modifier = Modifier.height(45.dp))
 
         SimpleTextField(
             placeholder = "Email or Username",
@@ -78,13 +78,13 @@ fun LoginPage(navController: NavController, viewModel: LoginViewModel = viewMode
             isValid = viewModel.isPasswordValid.collectAsState().value
         )
 
-        Spacer(modifier = Modifier.height(40.dp))
+        Spacer(modifier = Modifier.height(10.dp))
 
         TextButton(
             modifier = Modifier.align(alignment = Alignment.End),
-            onClick = { navController.navigate(route = Routes.registerPage) }
+            onClick = {  }
         ) {
-            Text("Forget password", color = PurpleTextAndIcon,fontWeight = FontWeight.W700, fontSize = 15.sp)
+            Text("Forget password ?", color = PurpleTextAndIcon,fontWeight = FontWeight.W700, fontSize = 15.sp)
         }
 
         Spacer(modifier = Modifier.height(40.dp))
@@ -95,6 +95,26 @@ fun LoginPage(navController: NavController, viewModel: LoginViewModel = viewMode
             onClick = { navController.navigate(route = Routes.registerPage) }
         ) {
             Text(text = "Sign In")
+        }
+
+        Spacer(modifier = Modifier.height(40.dp))
+
+        Row(
+            Modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Center
+        ) {
+            Text(
+                text = "Don't have account?", color = PurpleTextAndIcon,
+                fontSize = 15.sp,
+                fontWeight = FontWeight.W400,
+            )
+
+            TextButton(
+                onClick = { navController.navigate(route = Routes.registerPage) }
+            ) {
+                Text("Sign Up", color = PurpleTextAndIcon, fontWeight = FontWeight.W700, fontSize = 15.sp)
+            }
         }
     }
 }
