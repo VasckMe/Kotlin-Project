@@ -6,14 +6,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.dsw52839.model.NoteModel
 import com.example.dsw52839.utils.NotesRepository
-import com.example.dsw52839.utils.Routes
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asSharedFlow
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 class HomeViewModel: ViewModel() {
@@ -30,7 +24,7 @@ class HomeViewModel: ViewModel() {
     }
 
     init {
-
+        Log.d("HomeVM", "NOOOOOOOO")
         val items = repository.getAll()
         notesList.addAll(items)
 

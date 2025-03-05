@@ -7,25 +7,18 @@ import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 
 class NotesRepository private constructor() {
-
-    val items = arrayListOf<NoteModel>().apply {
+    private val items = arrayListOf<NoteModel>().apply {
         addAll(dummyNotes())
     }
     private val _newNoteInsertionListener = MutableSharedFlow<NoteModel>()
-    val newNoteInsertionListener: SharedFlow<NoteModel> = _newNoteInsertionListener.asSharedFlow()
-
     private val _updateNoteListener = MutableSharedFlow<NoteModel>()
-    val updateNoteListener: SharedFlow<NoteModel> = _updateNoteListener.asSharedFlow()
-
     private val _deleteNoteListener = MutableSharedFlow<Int>()
+
+    val newNoteInsertionListener: SharedFlow<NoteModel> = _newNoteInsertionListener.asSharedFlow()
+    val updateNoteListener: SharedFlow<NoteModel> = _updateNoteListener.asSharedFlow()
     val deleteNoteListener: SharedFlow<Int> = _deleteNoteListener.asSharedFlow()
 
-
-
-
-
     companion object {
-
         private var _instance: NotesRepository? = null
 
         fun getInstance(): NotesRepository {
@@ -33,17 +26,15 @@ class NotesRepository private constructor() {
                 _instance = NotesRepository()
 
             return _instance as NotesRepository
-
         }
-
     }
 
     fun getAll(): List<NoteModel> {
         return items
     }
 
-    fun get(id: Int) : NoteModel {
-        return items.first { it.id == id }
+    fun get(id: Int): NoteModel? {
+        return items.firstOrNull { it.id == id }
     }
 
     suspend fun insert(item: NoteModel): Int {
@@ -73,5 +64,4 @@ class NotesRepository private constructor() {
 
         _deleteNoteListener.emit(id)
     }
-
 }

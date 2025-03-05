@@ -1,40 +1,38 @@
 package com.example.dsw52839.views
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
-import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.input.*
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.dsw52839.R
-import com.example.dsw52839.ui.theme.PurpleBorder
+import com.example.dsw52839.model.SimpleTextField
 import com.example.dsw52839.ui.theme.PurpleButton
 import com.example.dsw52839.ui.theme.PurpleTextAndIcon
 import com.example.dsw52839.utils.Routes
+import com.example.dsw52839.utils.StoreDataManager
 import com.example.dsw52839.viewmodel.LoginViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 
 @Composable
-fun LoginPage(navController: NavController, viewModel: LoginViewModel = viewModel()) {
+fun LoginPage(
+    navController: NavController,
+    dataStoreManager: StoreDataManager,
+    viewModel: LoginViewModel = viewModel()
+) {
+
+    val scope = rememberCoroutineScope()
+
     Column(
         Modifier
             .fillMaxSize()
@@ -91,8 +89,19 @@ fun LoginPage(navController: NavController, viewModel: LoginViewModel = viewMode
 
         Button(
             colors = ButtonDefaults.buttonColors(containerColor = PurpleButton),
-            modifier = Modifier.fillMaxWidth(),
-            onClick = { navController.navigate(route = Routes.homePage) }
+            modifier = Modifier.fillMaxWidth().height(50.dp),
+            onClick = {
+                viewModel.checkCreds()
+
+                if (viewModel.isEmailValid.value && viewModel.isPasswordValid.value) {
+                    scope.launch {
+                        dataStoreManager.saveData(isLogged = true)
+                    }
+
+                    navController.navigate(route = Routes.homePage)
+                }
+
+            }
         ) {
             Text(text = "Sign In")
         }

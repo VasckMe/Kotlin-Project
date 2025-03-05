@@ -1,50 +1,48 @@
-package com.rashidsaleem.notesapp.home
-
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
-import com.example.dsw52839.R
 import com.example.dsw52839.utils.Routes
+import com.example.dsw52839.utils.StoreDataManager
 import com.example.dsw52839.viewmodel.HomeViewModel
-import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 @Composable
 fun HomePage(
     navController: NavController,
-    viewModel: HomeViewModel = HomeViewModel()
-) {
+    viewModel: HomeViewModel = HomeViewModel(),
+    dataStoreManager: StoreDataManager,
+    ) {
 
     val notes = viewModel.notesList
+    val scope = rememberCoroutineScope()
 
     Scaffold(
         topBar = {
@@ -55,11 +53,29 @@ fun HomePage(
                         color = MaterialTheme.colorScheme.primary
                     )
                     .padding(
-                        start = 50.dp,
-                        top = 20.dp,
+                        top = 40.dp,
                         bottom = 20.dp,
                     )
+                    .padding(
+                        horizontal = 16.dp,
+                    ),
             ) {
+                Icon(
+                    Icons.AutoMirrored.Filled.ArrowBack,
+                    modifier = Modifier
+                        .size(20.dp)
+                        .clickable {
+                            scope.launch {
+                                dataStoreManager.saveData(isLogged = false)
+                            }
+                            navController.popBackStack()
+                        }
+                    ,
+                    contentDescription = null,
+                    tint = Color.White,
+                )
+
+                Spacer(modifier = Modifier.width(20.dp))
 
                 Text(
                     text = "Notes App",
@@ -67,7 +83,6 @@ fun HomePage(
                     fontWeight = FontWeight.SemiBold,
                     color = Color.White
                 )
-
             }
         },
         floatingActionButton = {
@@ -78,7 +93,12 @@ fun HomePage(
                 },
                 containerColor = MaterialTheme.colorScheme.tertiary
             ) {
-                Icons.Default.Add
+                Icon(
+                    Icons.Default.Add,
+                    modifier = Modifier.size(40.dp),
+                    contentDescription = null,
+                    tint = Color.White,
+                )
             }
         }
     ) {
@@ -113,7 +133,7 @@ fun HomePage(
                             RoundedCornerShape(10.dp)
                         )
                         .clickable {
-                            viewModel.changeChosenID(newID = index)
+                            viewModel.changeChosenID(newID = note.id)
                             navController.navigate(route = Routes.notePage)
                         }
                         .padding(

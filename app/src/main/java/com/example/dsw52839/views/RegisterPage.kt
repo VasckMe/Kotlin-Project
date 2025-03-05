@@ -1,10 +1,9 @@
 package com.example.dsw52839.views
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Lock
@@ -13,7 +12,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -21,6 +19,7 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.dsw52839.R
+import com.example.dsw52839.model.SimpleTextField
 import com.example.dsw52839.ui.theme.PurpleButton
 import com.example.dsw52839.ui.theme.PurpleTextAndIcon
 import com.example.dsw52839.utils.Routes
@@ -39,7 +38,7 @@ fun RegisterPage(navController: NavController, viewModel: RegisterViewModel = vi
             Spacer(modifier = Modifier.height(20.dp))
 
             IconButton(onClick = { navController.popBackStack() }) {
-                Icon(Icons.Default.ArrowBack, contentDescription = "Back", tint = PurpleTextAndIcon)
+                Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back", tint = PurpleTextAndIcon)
             }
 
             Spacer(modifier = Modifier.height(100.dp))

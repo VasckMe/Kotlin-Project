@@ -1,6 +1,5 @@
 package com.example.dsw52839.views
 
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -12,8 +11,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LocalTextStyle
@@ -21,38 +18,29 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import com.example.dsw52839.R
-import com.example.dsw52839.utils.Routes
+import com.example.dsw52839.components.ConfirmationDialog
 import com.example.dsw52839.viewmodel.DetailViewModel
-import com.example.dsw52839.viewmodel.NoteViewModel
-import kotlinx.coroutines.flow.collectLatest
 
 @Composable
 fun NotePage(
     navController: NavController,
-    viewModel: DetailViewModel = androidx.lifecycle.viewmodel.compose.viewModel()
+    viewModel: DetailViewModel = androidx.lifecycle.viewmodel.compose.viewModel(),
 ) {
-    Log.d("NotePage", "${viewModel._noteId}")
     val title = viewModel.title.collectAsState()
     val description = viewModel.description.collectAsState()
-//    val showConfirmationDialog = viewModel.showConfirmationDialog.collectAsState()
-
-
+    val showConfirmationDialog = viewModel.showConfirmationDialog.collectAsState()
 
     Column(
         modifier = Modifier
             .fillMaxSize()
     ) {
-        // AppBar
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -60,9 +48,13 @@ fun NotePage(
                     color = MaterialTheme.colorScheme.primary,
                 )
                 .padding(
+                    top = 40.dp,
+                    bottom = 20.dp,
+                )
+                .padding(
                     horizontal = 16.dp,
-                    vertical = 20.dp,
                 ),
+
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween,
         ) {
@@ -72,8 +64,9 @@ fun NotePage(
                 modifier = Modifier
                     .size(20.dp)
                     .clickable {
-                        viewModel.saveOrUpdate()
-                        navController.popBackStack()
+                        viewModel.saveOrUpdate() {
+                            navController.popBackStack()
+                        }
                     }
                 ,
                 contentDescription = null,
@@ -84,8 +77,7 @@ fun NotePage(
                 modifier = Modifier
                     .size(20.dp)
                     .clickable {
-                        viewModel.deleteNote()
-                        navController.popBackStack()
+                        viewModel.showConfirmationDialog()
                     }
                 ,
                 contentDescription = null,
@@ -121,15 +113,16 @@ fun NotePage(
 
     }
 
-//    if (showConfirmationDialog.value) {
-//        ConfirmationDialog(
-//            dismissButton = {
-//                viewModel.hideConfirmationDialog()
-//            },
-//            confirmButton =  {
-//                viewModel.deleteNote()
-//            },
-//        )
-//    }
-
+    if (showConfirmationDialog.value) {
+        ConfirmationDialog(
+            dismissButton = {
+                viewModel.hideConfirmationDialog()
+            },
+            confirmButton =  {
+                viewModel.deleteNote {
+                    navController.popBackStack()
+                }
+            },
+        )
+    }
 }

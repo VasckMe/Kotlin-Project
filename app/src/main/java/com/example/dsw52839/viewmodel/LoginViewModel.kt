@@ -24,4 +24,9 @@ class LoginViewModel : ViewModel() {
         _password.value = newPassword
         _isPasswordValid.value = newPassword.length >= 6
     }
+
+    fun checkCreds() {
+        _isEmailValid.value = _email.value.length >= 3
+        _isPasswordValid.value = _password.value.length >= 6
+    }
 }
