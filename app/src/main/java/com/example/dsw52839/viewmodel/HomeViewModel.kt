@@ -9,21 +9,25 @@ import com.example.dsw52839.utils.NotesRepository
 import com.example.dsw52839.utils.Routes
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 class HomeViewModel: ViewModel() {
 
-    private val TAG = "HomeViewModel"
-
     private val repository: NotesRepository = NotesRepository.getInstance()
 
     val notesList = mutableStateListOf<NoteModel>()
-    private val _eventFlow = MutableSharedFlow<HomeEvent>()
-    val eventFlow: SharedFlow<HomeEvent> = _eventFlow.asSharedFlow()
+    private val _chosenNoteId = MutableStateFlow<Int>(0)
+    val chosenNoteId: StateFlow<Int> = _chosenNoteId
     val _scope = viewModelScope
+
+    fun changeChosenID(newID: Int) {
+        _chosenNoteId.value = newID
+    }
 
     init {
 
@@ -32,7 +36,7 @@ class HomeViewModel: ViewModel() {
 
         _scope.launch {
             repository.newNoteInsertionListener.collect { newNote: NoteModel ->
-                notesList.add(0, newNote)
+                notesList.add(newNote)
             }
         }
 
@@ -57,18 +61,6 @@ class HomeViewModel: ViewModel() {
 
             }
         }
-
-    }
-
-    fun listItemOnClick(id: Int) = _scope.launch(Dispatchers.Main) {
-        Log.d(TAG, "listItemOnClick: $id")
-        val route = Routes.notePage + "/$id"
-        _eventFlow.emit(HomeEvent.NavigateNext(route))
-    }
-
-
-    sealed class HomeEvent {
-        data class NavigateNext(val route: String): HomeEvent()
 
     }
 }

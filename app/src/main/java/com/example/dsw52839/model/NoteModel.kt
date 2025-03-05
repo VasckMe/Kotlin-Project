@@ -12,7 +12,7 @@ fun dummyNotes(): List<NoteModel> {
     val items = arrayListOf<NoteModel>()
 
 //    for (i in 1..20) {
-    for (i in 1..3) {
+    for (i in 0..2) {
         items.add(
             NoteModel(i, "Title $i", "Description $i")
         )

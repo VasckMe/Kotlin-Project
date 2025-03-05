@@ -47,7 +47,7 @@ class NotesRepository private constructor() {
     }
 
     suspend fun insert(item: NoteModel): Int {
-        val newId = items.size + 1
+        val newId = items.size
         val newNote = item.copy(
             id = newId
         )
@@ -62,7 +62,6 @@ class NotesRepository private constructor() {
         items[itemIndex] = item
 
         _updateNoteListener.emit(item)
-
     }
 
     suspend fun delete(id: Int) {

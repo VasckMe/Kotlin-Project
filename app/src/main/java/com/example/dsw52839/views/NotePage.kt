@@ -1,5 +1,6 @@
 package com.example.dsw52839.views
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -28,28 +29,23 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.example.dsw52839.R
+import com.example.dsw52839.utils.Routes
+import com.example.dsw52839.viewmodel.DetailViewModel
 import com.example.dsw52839.viewmodel.NoteViewModel
 import kotlinx.coroutines.flow.collectLatest
 
 @Composable
 fun NotePage(
-    viewModel: NoteViewModel = androidx.lifecycle.viewmodel.compose.viewModel(),
-    navigateBack: () -> Unit,
+    navController: NavController,
+    viewModel: DetailViewModel = androidx.lifecycle.viewmodel.compose.viewModel()
 ) {
-
+    Log.d("NotePage", "${viewModel._noteId}")
     val title = viewModel.title.collectAsState()
     val description = viewModel.description.collectAsState()
-    val showConfirmationDialog = viewModel.showConfirmationDialog.collectAsState()
+//    val showConfirmationDialog = viewModel.showConfirmationDialog.collectAsState()
 
-    LaunchedEffect(key1 = true) {
-        viewModel.event.collectLatest { event: NoteViewModel.Event ->
-            when(event) {
-                is NoteViewModel.Event.NavigateBack -> navigateBack()
-                NoteViewModel.Event.NavigateBack -> TODO()
-            }
-        }
-    }
 
 
     Column(
@@ -76,7 +72,8 @@ fun NotePage(
                 modifier = Modifier
                     .size(20.dp)
                     .clickable {
-                        viewModel.backIconOnClick()
+                        viewModel.saveOrUpdate()
+                        navController.popBackStack()
                     }
                 ,
                 contentDescription = null,
@@ -87,7 +84,8 @@ fun NotePage(
                 modifier = Modifier
                     .size(20.dp)
                     .clickable {
-                        viewModel.backIconOnClick()
+                        viewModel.deleteNote()
+                        navController.popBackStack()
                     }
                 ,
                 contentDescription = null,
@@ -123,15 +121,15 @@ fun NotePage(
 
     }
 
-    if (showConfirmationDialog.value) {
-        ConfirmationDialog(
-            dismissButton = {
-                viewModel.hideConfirmationDialog()
-            },
-            confirmButton =  {
-                viewModel.deleteNote()
-            },
-        )
-    }
+//    if (showConfirmationDialog.value) {
+//        ConfirmationDialog(
+//            dismissButton = {
+//                viewModel.hideConfirmationDialog()
+//            },
+//            confirmButton =  {
+//                viewModel.deleteNote()
+//            },
+//        )
+//    }
 
 }

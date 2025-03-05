@@ -1,5 +1,6 @@
 package com.rashidsaleem.notesapp.home
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -39,21 +40,11 @@ import kotlinx.coroutines.flow.collectLatest
 
 @Composable
 fun HomePage(
-//    navController: NavController,
-    viewModel: HomeViewModel = HomeViewModel(),
-    navigateNext: (String) -> Unit,
+    navController: NavController,
+    viewModel: HomeViewModel = HomeViewModel()
 ) {
 
     val notes = viewModel.notesList
-
-
-    LaunchedEffect(key1 = true) {
-        viewModel.eventFlow.collectLatest { event ->
-            when (event) {
-                is HomeViewModel.HomeEvent.NavigateNext -> navigateNext(event.route)
-            }
-        }
-    }
 
     Scaffold(
         topBar = {
@@ -82,9 +73,8 @@ fun HomePage(
         floatingActionButton = {
             FloatingActionButton(
                 onClick = {
-//                    viewModel.addNewNote()
-                    val route = Routes.notePage + "/-1"
-                    navigateNext(route)
+                    viewModel.changeChosenID(-1)
+                    navController.navigate(Routes.notePage)
                 },
                 containerColor = MaterialTheme.colorScheme.tertiary
             ) {
@@ -123,7 +113,8 @@ fun HomePage(
                             RoundedCornerShape(10.dp)
                         )
                         .clickable {
-                            viewModel.listItemOnClick(note.id)
+                            viewModel.changeChosenID(newID = index)
+                            navController.navigate(route = Routes.notePage)
                         }
                         .padding(
                             horizontal = 16.dp,
@@ -139,7 +130,6 @@ fun HomePage(
                     )
                 }
             }
-
         }
     }
 }
