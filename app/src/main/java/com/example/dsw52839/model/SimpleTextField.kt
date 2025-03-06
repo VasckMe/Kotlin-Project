@@ -1,7 +1,9 @@
 package com.example.dsw52839.model
 
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
@@ -15,11 +17,14 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
+import com.example.dsw52839.R
 import com.example.dsw52839.ui.theme.PurpleBorder
 import com.example.dsw52839.ui.theme.PurpleTextAndIcon
 
@@ -44,7 +49,12 @@ fun SimpleTextField(
         trailingIcon = {
             if (showTrailingIcon) {
                 IconButton(onClick = { passwordIsHidden.value = !passwordIsHidden.value }) {
-                    Icon(Icons.Default.Close, contentDescription = null)
+                    Icon(
+                        painter = painterResource(id = R.drawable.ph_eye),
+                        contentDescription = "Ellipse Decoration",
+                        modifier = Modifier.size(20.dp),
+                        tint = Color.Black,
+                    )
                 }
             }
         },
